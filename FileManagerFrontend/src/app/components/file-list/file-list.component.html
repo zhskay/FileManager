@@ -1,0 +1,76 @@
+<div class="file-list-container">
+    <mat-toolbar class="file-list-actions-toolbar">
+        <fm-file-input (fileChange)="uploadFile($event)"></fm-file-input>
+    </mat-toolbar>
+
+    <table mat-table [dataSource]="files$ | async" matSort (matSortChange)="sortChanged($event)">
+        
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef class="position-column"> No. </th>
+            <td mat-cell *matCellDef="let file"> {{ file.position }} </td>
+        </ng-container>
+        
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Имя файла </th>
+            <td mat-cell *matCellDef="let file" class="name-cell">
+
+                <ng-container [ngSwitch]="file.type">
+                    <mat-icon *ngSwitchCase="FileType.Image" color="primary">image</mat-icon>
+                    <mat-icon *ngSwitchCase="FileType.Document" color="primary">notes</mat-icon>
+                    <mat-icon *ngSwitchCase="FileType.Media" color="primary">headset</mat-icon>
+                    <mat-icon *ngSwitchCase="FileType.Unknown" color="primary">attach_file</mat-icon>
+                </ng-container>
+
+                <span class="name" title="{{ file.name }}">{{ file.name }}</span>
+            </td>
+        </ng-container>
+        
+        <!-- Created Date Column -->
+        <ng-container matColumnDef="createdDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="date-column"> Дата создания </th>
+            <td mat-cell *matCellDef="let file" class="date-cell"> {{ file.createdDate | fmDate }} </td>
+        </ng-container>
+        
+        <!-- Last Modified Date Column -->
+        <ng-container matColumnDef="lastModifiedDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="date-column"> Дата последнего изменения </th>
+            <td mat-cell *matCellDef="let file" class="date-cell"> {{ file.lastModifiedDate | fmDate }} </td>
+        </ng-container>
+
+        <!-- View File Button -->
+        <ng-container matColumnDef="view">
+            <th mat-header-cell *matHeaderCellDef class="action-column"></th>
+            <td mat-cell *matCellDef="let file">
+                <ng-container *ngIf="file.type === FileType.Image || file.type === FileType.Document">
+                    <button mat-icon-button color="primary" class="action-button" matTooltip="Открыть" (click)="openFile(file.name, file.type)">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                </ng-container>             
+            </td>
+        </ng-container>
+
+        <!-- Delete File Button -->
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef class="action-column"></th>
+            <td mat-cell *matCellDef="let file">
+                <button mat-icon-button color="primary" class="action-button" matTooltip="Удалить" (click)="deleteFile(file.name)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator *ngIf="filesQuery$ | async as query"
+        [length]="total$ | async"
+        [pageIndex]="query.pageIndex"
+        [pageSize]="query.pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="pageChanged($event)"
+        showFirstLastButtons>
+    </mat-paginator>
+</div>

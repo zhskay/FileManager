@@ -1,0 +1,10 @@
+<input #input type="file" class="input" (change)="changeValue($event.target)" [attr.accept]="accept">
+
+<button mat-icon-button
+    color="primary"
+    matTooltip="Загрузить файл"
+    matTooltipPosition="right"
+    (click)="openFileDialog()">
+
+    <mat-icon aria-label="Загрузить файл">add</mat-icon>
+</button>

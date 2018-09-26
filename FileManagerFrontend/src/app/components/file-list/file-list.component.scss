@@ -1,0 +1,63 @@
+.file-list-actions-toolbar {
+    height: 56px;
+    min-width: 925px;
+}
+
+table {
+    width: 100%;
+
+    .position-column {
+        min-width: 25px;
+    }
+
+    .name-cell {
+        // width: 100%;
+        max-width: 600px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        > * {
+            vertical-align: middle;
+        }
+
+        .name {
+            margin-left: 10px;
+        }
+    }
+
+    .date-column, .date-cell {
+        max-width: 120px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .action-column {
+        max-width: 30px;
+        padding-left: 5px;
+        padding-right: 5px;
+
+        text-align: center;
+    }
+
+    .action-button {
+        cursor: pointer;
+        opacity: 0;
+        transition: all .3s;
+    }
+
+    tr:hover {
+        .action-button {
+            opacity: .7;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.mat-paginator {
+    min-width: 925px;
+}

@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>{{ data.name }}</h2>
+
+<mat-dialog-content>
+    <div class="spinner-wrapper" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <pre [@fade]="loading ? 'fadeOut' : 'fadeIn'">
+        {{ textContent }}
+    </pre>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close cdkFocusInitial>Закрыть</button>
+</mat-dialog-actions>
